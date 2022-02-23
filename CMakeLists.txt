@@ -19,3 +19,22 @@ endif()
 include_directories(${Boost_INCLUDE_DIR})
 
 add_executable(crow main.cpp)
+
+#[[
+The check Performing Test CMAKE_HAVE_LIBC_PTHREAD
+is about whether thread support functions are compiled into libc library directly,
+or one need to link additional libraries (like -lpthread).
+
+The check Looking for pthread_create in pthreads
+tries to find pthreads library and function pthread_create in it.
+
+The check Looking for pthread_create in pthread
+tries to find pthread library and function pthread_create in it.
+
+That particular output could be interpreted as:
+
+    The platform supports threads by providing the header pthread.h and the library pthread.
+
+This output is common for Unix-like systems.
+Despite "Failed" and "not found" words, this is perfectly good output.
+]
