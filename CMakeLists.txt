@@ -3,6 +3,16 @@ project(Crow)
 
 set(CMAKE_CXX_STANDARD 20)
 
+set(CMAKE_THREAD_LIBS_INIT "-lpthread")
+SET(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -pthread")
+set(CMAKE_HAVE_THREADS_LIBRARY 1)
+set(CMAKE_USE_WIN32_THREADS_INIT 0)
+set(CMAKE_USE_PTHREADS_INIT 1)
+set(THREADS_PREFER_PTHREAD_FLAG ON)
+
+FIND_PACKAGE( Boost 1.70 COMPONENTS REQUIRED system)
+INCLUDE_DIRECTORIES( ${Boost_INCLUDE_DIR} )
+
 find_package(Threads)
 find_package(ZLIB)
 find_package(OpenSSL)
@@ -16,10 +26,13 @@ if (NOT CMAKE_BUILD_TYPE)
     set(CMAKE_BUILD_TYPE "Release")
 endif()
 
-include_directories(${Boost_INCLUDE_DIR})
 
-add_executable(crow main.cpp)
 
+add_executable(crowHello main.cpp)
+target_include_directories(crowHello PRIVATE ${Boost_INCLUDE_DIRS})
+TARGET_LINK_LIBRARIES( crowHello LINK_PUBLIC ${Boost_LIBRARIES} )
+
+install(TARGETS crowHello RUNTIME DESTINATION bin)
 #[[
 The check Performing Test CMAKE_HAVE_LIBC_PTHREAD
 is about whether thread support functions are compiled into libc library directly,
@@ -37,4 +50,4 @@ That particular output could be interpreted as:
 
 This output is common for Unix-like systems.
 Despite "Failed" and "not found" words, this is perfectly good output.
-]
+]]
